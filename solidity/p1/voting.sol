@@ -1,28 +1,25 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0
+pragma solidity ^0.8.0;
 
-Contract Voting {
+contract Voting {
 
-    mapping(address => uint16) public ticketmappings;
+    mapping(address => uint) public tickets;
+    address [] users;
 
-    function vote(address to) public {
-        
-        uint16 ticketNum = ticketmappings[to];
-        if(ticketNum != null) {
-            ticketmappings[to] = ticketNum + 1;
-        }else {
-            ticketmappings[to] = 1;
+    function vote(address to) public returns(bool) {
+        uint ts = tickets[to];
+        tickets[to] = ts + 1;
+        users.push(to);
+        return true;
+    }
+
+    function getVote(address to) public view returns(uint) {
+        return tickets[to];
+    }
+
+    function resetVote() external {
+        for(uint i =0; i < users.length; i ++){
+            delete tickets[users[i]];
         }
     }
-
-    function getVote(candicate address) public uint16 {
-        return ticketmappings[candicate];
-    }
-
-    function resetVote() public {
-        ticketmappings = new mapping(address => uint16)();
-    }
-
-
-
 }
